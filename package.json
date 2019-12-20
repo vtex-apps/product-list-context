@@ -4,8 +4,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "lint": "cd ./react && yarn lint",
-    "test": "cd ./react && yarn test",
-    "verify": "yarn lint && yarn test"
+    "verify": "yarn lint"
   },
   "version": "0.0.0",
   "devDependencies": {
