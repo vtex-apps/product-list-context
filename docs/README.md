@@ -30,7 +30,7 @@ import {
   ProductListProvider,
   useProductListState,
   useProductListDispatch,
-} from 'vtex.product-list-context'
+} from 'vtex.product-list-context/ProductListContext'
 
 ...
 const { products } = useProductListState()
