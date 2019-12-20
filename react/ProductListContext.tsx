@@ -44,25 +44,9 @@ const ProductListProvider: FC = ({ children }) => {
   )
 }
 
-const useProductListState = () => {
-  const context = useContext(ProductListStateContext)
-  if (context === undefined) {
-    throw new Error(
-      'useProductListState must be used within a ProductListProvider'
-    )
-  }
-  return context
-}
+const useProductListState = () => useContext(ProductListStateContext)
 
-const useProductListDispatch = () => {
-  const context = useContext(ProductListDispatchContext)
-  if (context === undefined) {
-    throw new Error(
-      'useProductListDispatch must be used within a ProductListProvider'
-    )
-  }
-  return context
-}
+const useProductListDispatch = () => useContext(ProductListDispatchContext)
 
 export default {
   ProductListProvider,
