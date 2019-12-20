@@ -10,7 +10,7 @@ Type of the State:
 
 ```
 interface State {
-  products: any[]
+  visibleProducts: any[]
 }
 ```
 
@@ -19,8 +19,8 @@ Type of ReducerActions:
 
 ```
 type ReducerActions =
-  | { type: 'ADD_PRODUCT'; args: { product: any } }
-  | { type: 'RESET' }
+  | { type: 'ADD_VISIBLE_PRODUCT'; args: { product: any } }
+  | { type: 'RESET_VISIBLE_PRODUCTS' }
 ```
 
 ## Usage

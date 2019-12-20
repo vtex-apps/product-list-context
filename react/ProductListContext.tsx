@@ -1,24 +1,27 @@
 import React, { createContext, useContext, useReducer, FC } from 'react'
 
 interface State {
-  products: any[]
+  visibleProducts: any[]
 }
 
 type ReducerActions =
-  | { type: 'ADD_PRODUCT'; args: { product: any } }
-  | { type: 'RESET' }
+  | { type: 'ADD_VISIBLE_PRODUCT'; args: { product: any } }
+  | { type: 'RESET_VISIBLE_PRODUCTS' }
 
 const ProductListStateContext = createContext({})
 const ProductListDispatchContext = createContext({})
 
 function productListReducer(state: State, action: ReducerActions): State {
   switch (action.type) {
-    case 'ADD_PRODUCT': {
+    case 'ADD_VISIBLE_PRODUCT': {
       const { product } = action.args
-      return { ...state, products: state.products.concat(product) }
+      return {
+        ...state,
+        visibleProducts: state.visibleProducts.concat(product),
+      }
     }
-    case 'RESET': {
-      return { ...state, products: [] }
+    case 'RESET_VISIBLE_PRODUCTS': {
+      return { ...state, visibleProducts: [] }
     }
     default: {
       throw new Error(`Unhandled action type on product-list-context`)
@@ -27,7 +30,7 @@ function productListReducer(state: State, action: ReducerActions): State {
 }
 
 const initialState: State = {
-  products: [] as any[],
+  visibleProducts: [] as any[],
 }
 
 const ProductListProvider: FC = ({ children }) => {
