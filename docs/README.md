@@ -8,7 +8,7 @@ This app is the Product List Context that should be used to store certain produc
 `useProductListState`: Hook that returns the state of the `ProductListStateContext`.
 Type of the State:
 
-```
+```tsx
 interface State {
   visibleProducts: any[]
 }
@@ -17,7 +17,7 @@ interface State {
 `useProductListDispatch`: Hook that returns the dispatch function that changes the state above.
 Type of ReducerActions:
 
-```
+```tsx
 type ReducerActions =
   | { type: 'ADD_VISIBLE_PRODUCT'; args: { product: any } }
   | { type: 'RESET_VISIBLE_PRODUCTS' }
@@ -25,7 +25,7 @@ type ReducerActions =
 
 ## Usage
 
-```
+```tsx
 import {
   ProductListProvider,
   useProductListState,
