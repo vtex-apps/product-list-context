@@ -10,8 +10,8 @@ The Product List Context is responsible for storing product data from an app and
 
 Add the `product-list-context` app to the app's dependencies list (in the `manifest.json`) from which you want fetch product data. For example:
 
-```tsx
-"dependecies": {
+```json
+"dependencies": {
   "vtex.product-list-context": "0.x"
 }
 ```
@@ -41,14 +41,14 @@ const { visibleProducts } = useProductListState()
 
 `useProductListDispatch`: returns a dispatch function that is used to change the context state. Notice that you should only import and declare this hook if you wish to change data that's stored in the context.
 
-```
+```tsx
 import { useProductListDispatch } from 'vtex.product-list-context/ProductListContext'
 const dispatch = useProductListDispatch()
 ```
 
 Starting from the dispatch function, you can add new values to the `visibleProducts` array (ADD_VISIBLE_PRODUCT) or clear all current existing object values (RESET_VISIBLE_PRODUCTS). For example:
 
-```
+```tsx
 const dispatch = useProductListDispatch()  useEffect(() => {
   if (inView) {
     dispatch({ type: 'ADD_VISIBLE_PRODUCT', args: { product: product }})
