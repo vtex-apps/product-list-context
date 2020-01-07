@@ -1,27 +1,33 @@
 import React, { createContext, useContext, useReducer, FC } from 'react'
 
-interface State {
-  visibleProducts: any[]
+export interface State {
+  toBeImpressed: any[]
+  seenIds: Set<string>
 }
 
 type ReducerActions =
-  | { type: 'ADD_VISIBLE_PRODUCT'; args: { product: any } }
-  | { type: 'RESET_VISIBLE_PRODUCTS' }
+  | { type: 'ADD_TO_BE_IMPRESSED'; args: { product: any } }
+  | { type: 'RESET_TO_BE_IMPRESSED' }
 
 const ProductListStateContext = createContext({})
 const ProductListDispatchContext = createContext({})
 
 function productListReducer(state: State, action: ReducerActions): State {
   switch (action.type) {
-    case 'ADD_VISIBLE_PRODUCT': {
+    case 'ADD_TO_BE_IMPRESSED': {
       const { product } = action.args
+      let toBeImpressed = state.toBeImpressed
+      if (!state.seenIds.has(product.productId)) {
+        state.seenIds.add(product.productId)
+        toBeImpressed = state.toBeImpressed.concat(product)
+      }
       return {
         ...state,
-        visibleProducts: state.visibleProducts.concat(product),
+        toBeImpressed,
       }
     }
-    case 'RESET_VISIBLE_PRODUCTS': {
-      return { ...state, visibleProducts: [] }
+    case 'RESET_TO_BE_IMPRESSED': {
+      return { ...state, toBeImpressed: [] }
     }
     default: {
       throw new Error(`Unhandled action type on product-list-context`)
@@ -30,7 +36,8 @@ function productListReducer(state: State, action: ReducerActions): State {
 }
 
 const initialState: State = {
-  visibleProducts: [] as any[],
+  toBeImpressed: [] as any[],
+  seenIds: new Set(),
 }
 
 const ProductListProvider: FC = ({ children }) => {
