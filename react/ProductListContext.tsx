@@ -1,33 +1,37 @@
 import React, { createContext, useContext, useReducer, FC } from 'react'
 
+export interface Product {
+  productId: string
+  [key: string]: any
+}
 export interface State {
-  toBeImpressed: any[]
-  seenIds: Set<string>
+  nextImpressions: Product[]
+  sentIds: Set<string>
 }
 
 type ReducerActions =
-  | { type: 'ADD_TO_BE_IMPRESSED'; args: { product: any } }
-  | { type: 'RESET_TO_BE_IMPRESSED' }
+  | { type: 'SEND_IMPRESSION'; args: { product: Product } }
+  | { type: 'CLEAR_TO_BE_SENT' }
 
 const ProductListStateContext = createContext({})
 const ProductListDispatchContext = createContext({})
 
 function productListReducer(state: State, action: ReducerActions): State {
   switch (action.type) {
-    case 'ADD_TO_BE_IMPRESSED': {
+    case 'SEND_IMPRESSION': {
       const { product } = action.args
-      let toBeImpressed = state.toBeImpressed
-      if (!state.seenIds.has(product.productId)) {
-        state.seenIds.add(product.productId)
-        toBeImpressed = state.toBeImpressed.concat(product)
+      let nextImpressions = state.nextImpressions
+      if (!state.sentIds.has(product.productId)) {
+        state.sentIds.add(product.productId)
+        nextImpressions = state.nextImpressions.concat(product)
       }
       return {
         ...state,
-        toBeImpressed,
+        nextImpressions,
       }
     }
-    case 'RESET_TO_BE_IMPRESSED': {
-      return { ...state, toBeImpressed: [] }
+    case 'CLEAR_TO_BE_SENT': {
+      return { ...state, nextImpressions: [] }
     }
     default: {
       throw new Error(`Unhandled action type on product-list-context`)
@@ -36,8 +40,8 @@ function productListReducer(state: State, action: ReducerActions): State {
 }
 
 const initialState: State = {
-  toBeImpressed: [] as any[],
-  seenIds: new Set(),
+  nextImpressions: [] as Product[],
+  sentIds: new Set(),
 }
 
 const ProductListProvider: FC = ({ children }) => {

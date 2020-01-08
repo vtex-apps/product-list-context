@@ -4,8 +4,6 @@
     "test": "vtex-test-tools test"
   },
   "dependencies": {
-    "@types/debounce": "^1.2.0",
-    "@types/ramda": "^0.26.39",
     "apollo-client": "^2.6.3",
     "debounce": "^1.2.0",
     "ramda": "^0.26.1",
@@ -15,7 +13,9 @@
     "react-intl": "^2.9.0"
   },
   "devDependencies": {
+    "@types/debounce": "^1.2.0",
     "@types/graphql": "^14.2.2",
+    "@types/ramda": "^0.26.39",
     "@types/react": "^16.8.22",
     "@types/react-intl": "^2.3.18",
     "@vtex/tsconfig": "^0.2.0",

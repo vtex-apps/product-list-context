@@ -2,17 +2,21 @@ import { useEffect, useCallback } from 'react'
 import debounce from 'debounce'
 import { PixelContext } from 'vtex.pixel-manager'
 
-import productImpressionHooks, { State } from './ProductListContext'
+import productImpressionHooks, { State, Product } from './ProductListContext'
 import { parseToProductImpression } from './utils/normalize'
 
 const { useProductListDispatch, useProductListState } = productImpressionHooks
 
-const sendImpressionEvents = (products: any, push: any, dispatch: any) => {
+const sendImpressionEvents = (
+  products: Product[],
+  push: any,
+  dispatch: any
+) => {
   if (!products || products.length <= 0) {
     return
   }
-  const normalizedProducts = products.map(parseToProductImpression)
-  const impressions = normalizedProducts.map((product: any, index: number) => ({
+  const parsedProducts = products.map(parseToProductImpression)
+  const impressions = parsedProducts.map((product: Product, index: number) => ({
     product,
     position: index + 1,
   }))
@@ -21,18 +25,18 @@ const sendImpressionEvents = (products: any, push: any, dispatch: any) => {
     list: 'Shelf',
     impressions,
   })
-  dispatch({ type: 'RESET_TO_BE_IMPRESSED' })
+  dispatch({ type: 'CLEAR_TO_BE_SENT' })
 }
 
 const useProductImpression = () => {
-  const { toBeImpressed } = useProductListState() as State
+  const { nextImpressions } = useProductListState() as State
   const { push } = PixelContext.usePixel()
   const dispatch = useProductListDispatch()
 
   const debouncedSendImpressionEvents = useCallback(
     debounce(
-      (toBeImpressed: any, push: any, dispatch: any) => {
-        sendImpressionEvents(toBeImpressed, push, dispatch)
+      (nextImpressions: Product[], push: any, dispatch: any) => {
+        sendImpressionEvents(nextImpressions, push, dispatch)
       },
       1000,
       false
@@ -41,8 +45,8 @@ const useProductImpression = () => {
   )
 
   useEffect(() => {
-    debouncedSendImpressionEvents(toBeImpressed, push, dispatch)
-  }, [toBeImpressed, debouncedSendImpressionEvents, dispatch, push])
+    debouncedSendImpressionEvents(nextImpressions, push, dispatch)
+  }, [nextImpressions, debouncedSendImpressionEvents, dispatch, push])
 }
 
 export default useProductImpression
