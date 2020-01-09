@@ -25,7 +25,7 @@ const sendImpressionEvents = (
     list: 'Shelf',
     impressions,
   })
-  dispatch({ type: 'CLEAR_TO_BE_SENT' })
+  dispatch({ type: 'RESET_NEXT_IMPRESSIONS' })
 }
 
 const useProductImpression = () => {

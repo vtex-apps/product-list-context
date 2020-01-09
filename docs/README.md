@@ -38,9 +38,10 @@ You can use two Hooks to handle the data contained in the Product List Context o
 ```tsx
 import { ProductListContext } from 'vtex.product-list-context'
 
-...
-const { useProductListState } = ProductListContext
-const { nextImpressions } = useProductListState()
+//...
+
+  const { useProductListState } = ProductListContext
+  const { nextImpressions } = useProductListState()
 ```
 
 `useProductListDispatch`: returns a dispatch function that is used to change the context state. Notice that you should only import and declare this hook if you wish to change data that's stored in the context.
@@ -48,12 +49,13 @@ const { nextImpressions } = useProductListState()
 ```tsx
 import { ProductListContext } from 'vtex.product-list-context'
 
-...
-const { useProductListDispatch } = ProductListContext
-const dispatch = useProductListDispatch()
+//...
+
+  const { useProductListDispatch } = ProductListContext
+  const dispatch = useProductListDispatch()
 ```
 
-Starting from the dispatch function, you can add new values to the `nextImpressions` array (`SEND_IMPRESSION`) or clear this array (`CLEAR_TO_BE_SENT`). For example:
+Starting from the dispatch function, you can add new values to the `nextImpressions` array (`SEND_IMPRESSION`) or reset this array (`RESET_NEXT_IMPRESSIONS`). For example:
 
 ```tsx
 const dispatch = useProductListDispatch()  useEffect(() => {
@@ -68,9 +70,9 @@ This app also contains `useProductImpression`, which is a hook that you can call
 ```tsx
 import { useProductImpression } from 'vtex.product-list-context'
 
-...
+//...
 
-useProductImpression()
+  useProductImpression()
 ```
 
-When calling this hook, the `product-list-context` will always check if there is anything in the `nextImpressions` array. If there is, and the array doesn't change for one second, all the products in it will be impressed and the array will be cleared.
+When calling this hook, the `product-list-context` will always check if there is anything in the `nextImpressions` array. If there is, and the array doesn't change for one second, all the products in it will be impressed and the array will be reseted.

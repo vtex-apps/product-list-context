@@ -11,7 +11,7 @@ export interface State {
 
 type ReducerActions =
   | { type: 'SEND_IMPRESSION'; args: { product: Product } }
-  | { type: 'CLEAR_TO_BE_SENT' }
+  | { type: 'RESET_NEXT_IMPRESSIONS' }
 
 export type Dispatch = (action: ReducerActions) => void
 
@@ -39,7 +39,7 @@ function productListReducer(state: State, action: ReducerActions): State {
         nextImpressions,
       }
     }
-    case 'CLEAR_TO_BE_SENT': {
+    case 'RESET_NEXT_IMPRESSIONS': {
       return { ...state, nextImpressions: [] }
     }
     default: {
