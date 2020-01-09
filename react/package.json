@@ -25,7 +25,7 @@
     "prop-types": "^15.7.2",
     "typescript": "3.7.3",
     "vtex.pixel-manager": "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.pixel-manager@1.1.4/public/@types/vtex.pixel-manager",
-    "vtex.render-runtime": "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.render-runtime@8.87.3/public/@types/vtex.render-runtime"
+    "vtex.render-runtime": "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.render-runtime@8.88.0/public/@types/vtex.render-runtime"
   },
   "version": "0.1.1"
 }

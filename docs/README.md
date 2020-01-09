@@ -28,30 +28,49 @@ return (
 )
 ```
 
-The Product List Context state is comprised of a object with a single property: `visibleProducts`.
+The Product List Context state is comprised of a object with the following properties: `nextImpressions`: List of products that are going to be sent on the product impression event.
+`sentIds`: Set of the IDs of the products that were already impressed or are marked to be impressed.
 
-You can use two Hooks to handle the data contained in the Product List Context object: 'useProductListState' and 'useProductListDispatch'.
+You can use two Hooks to handle the data contained in the Product List Context object: `useProductListState` and `useProductListDispatch`.
 
 `useProductListState`: used to get the data stored in the context. In order to use it, you need to first import and then call the hook anywhere in any file under the component which is wrapped by ProductListProvider. For example:
 
 ```tsx
-import { useProductListState } from 'vtex.product-list-context/ProductListContext'
-const { visibleProducts } = useProductListState()
+import { ProductListContext } from 'vtex.product-list-context'
+
+...
+const { useProductListState } = ProductListContext
+const { nextImpressions } = useProductListState()
 ```
 
 `useProductListDispatch`: returns a dispatch function that is used to change the context state. Notice that you should only import and declare this hook if you wish to change data that's stored in the context.
 
 ```tsx
-import { useProductListDispatch } from 'vtex.product-list-context/ProductListContext'
+import { ProductListContext } from 'vtex.product-list-context'
+
+...
+const { useProductListDispatch } = ProductListContext
 const dispatch = useProductListDispatch()
 ```
 
-Starting from the dispatch function, you can add new values to the `visibleProducts` array (ADD_VISIBLE_PRODUCT) or clear all current existing object values (RESET_VISIBLE_PRODUCTS). For example:
+Starting from the dispatch function, you can add new values to the `nextImpressions` array (`SEND_IMPRESSION`) or clear this array (`CLEAR_TO_BE_SENT`). For example:
 
 ```tsx
 const dispatch = useProductListDispatch()  useEffect(() => {
   if (inView) {
-    dispatch({ type: 'ADD_VISIBLE_PRODUCT', args: { product: product }})
+    dispatch({ type: 'SEND_IMPRESSION', args: { product: product }})
   }
 }, [inView])
 ```
+
+This app also contains `useProductImpression`, which is a hook that you can call when you want to send impression events of the products in the `nextImpressions` array. For example:
+
+```tsx
+import { useProductImpression } from 'vtex.product-list-context'
+
+...
+
+useProductImpression()
+```
+
+When calling this hook, the `product-list-context` will always check if there is anything in the `nextImpressions` array. If there is, and the array doesn't change for one second, all the products in it will be impressed and the array will be cleared.

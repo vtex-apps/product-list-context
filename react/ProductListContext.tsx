@@ -1,5 +1,9 @@
 import React, { createContext, useContext, useReducer, FC } from 'react'
 
+const DEFAULT_STATE = {
+  nextImpressions: [] as Product[],
+  sentIds: new Set<string>(),
+}
 export interface Product {
   productId: string
   [key: string]: any
@@ -13,8 +17,12 @@ type ReducerActions =
   | { type: 'SEND_IMPRESSION'; args: { product: Product } }
   | { type: 'CLEAR_TO_BE_SENT' }
 
-const ProductListStateContext = createContext({})
-const ProductListDispatchContext = createContext({})
+export type Dispatch = (action: ReducerActions) => void
+
+const ProductListStateContext = createContext<State>(DEFAULT_STATE)
+const ProductListDispatchContext = createContext<Dispatch>(action => {
+  console.error('error in dispatch ', action)
+})
 
 function productListReducer(state: State, action: ReducerActions): State {
   switch (action.type) {

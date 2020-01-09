@@ -2,20 +2,24 @@ import { useEffect, useCallback } from 'react'
 import debounce from 'debounce'
 import { PixelContext } from 'vtex.pixel-manager'
 
-import productImpressionHooks, { State, Product } from './ProductListContext'
-import { parseToProductImpression } from './utils/normalize'
+import productImpressionHooks, {
+  State,
+  Product,
+  Dispatch,
+} from './ProductListContext'
+import { parseToProductImpression } from './utils/parser'
 
 const { useProductListDispatch, useProductListState } = productImpressionHooks
 
 const sendImpressionEvents = (
   products: Product[],
   push: any,
-  dispatch: any
+  dispatch: Dispatch
 ) => {
   if (!products || products.length <= 0) {
     return
   }
-  const parsedProducts = products.map(parseToProductImpression)
+  const parsedProducts = products.map(parseToProductImpression) as Product[]
   const impressions = parsedProducts.map((product: Product, index: number) => ({
     product,
     position: index + 1,
@@ -35,7 +39,7 @@ const useProductImpression = () => {
 
   const debouncedSendImpressionEvents = useCallback(
     debounce(
-      (nextImpressions: Product[], push: any, dispatch: any) => {
+      (nextImpressions: Product[], push: any, dispatch: Dispatch) => {
         sendImpressionEvents(nextImpressions, push, dispatch)
       },
       1000,

@@ -1,5 +1,7 @@
 import { pathOr, head } from 'ramda'
 
+import { Product } from '../ProductListContext'
+
 import { changeImageUrlSize, toHttps } from './urlHelpers'
 
 const defaultImage = { imageUrl: '', imageLabel: '' }
@@ -13,7 +15,7 @@ function findAvailableProduct(item: any) {
   )
 }
 
-export function parseToProductImpression(product: any) {
+export function parseToProductImpression(product: Product) {
   if (!product) return null
   const parsedProduct = { ...product }
   const items = parsedProduct.items || []

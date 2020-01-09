@@ -16,9 +16,9 @@ export const MAX_HEIGHT = 4000
  * "?width=WIDTH&height=HEIGHT&aspect=true"
  *
  */
-const baseUrlRegex = new RegExp(/.+ids\/(\d+)/)
-
-const httpRegex = new RegExp(/http:\/\//)
+const baseUrlRegex = /.+ids\/(\d+)/
+const httpRegex = /http:\/\//
+const legacyUrlPattern = '/arquivos/ids/'
 
 export function toHttps(url: any) {
   return url.replace(httpRegex, 'https://')
@@ -32,7 +32,6 @@ export function cleanImageUrl(imageUrl: any) {
 }
 
 function replaceLegacyFileManagerUrl(imageUrl: any, width: any, height: any) {
-  const legacyUrlPattern = '/arquivos/ids/'
   const isLegacyUrl = imageUrl.includes(legacyUrlPattern)
   if (!isLegacyUrl) return imageUrl
   return `${cleanImageUrl(imageUrl)}-${width}-${height}`
@@ -44,8 +43,8 @@ export function changeImageUrlSize(
   height: number | string = DEFAULT_HEIGHT
 ) {
   if (!imageUrl) return
-  typeof width === 'number' && (width = Math.min(width, MAX_WIDTH))
-  typeof height === 'number' && (height = Math.min(height, MAX_HEIGHT))
+  if (typeof width === 'number') width = Math.min(width, MAX_WIDTH)
+  if (typeof height === 'number') height = Math.min(height, MAX_HEIGHT)
 
   const normalizedImageUrl = replaceLegacyFileManagerUrl(
     imageUrl,
