@@ -1,9 +1,5 @@
 import React, { createContext, useContext, useReducer, FC } from 'react'
 
-const DEFAULT_STATE = {
-  nextImpressions: [] as Product[],
-  sentIds: new Set<string>(),
-}
 export interface Product {
   productId: string
   [key: string]: any
@@ -18,6 +14,11 @@ type ReducerActions =
   | { type: 'CLEAR_TO_BE_SENT' }
 
 export type Dispatch = (action: ReducerActions) => void
+
+const DEFAULT_STATE: State = {
+  nextImpressions: [],
+  sentIds: new Set<string>(),
+}
 
 const ProductListStateContext = createContext<State>(DEFAULT_STATE)
 const ProductListDispatchContext = createContext<Dispatch>(action => {
@@ -48,7 +49,7 @@ function productListReducer(state: State, action: ReducerActions): State {
 }
 
 const initialState: State = {
-  nextImpressions: [] as Product[],
+  nextImpressions: [],
   sentIds: new Set(),
 }
 

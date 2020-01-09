@@ -15,8 +15,7 @@ function findAvailableProduct(item: any) {
   )
 }
 
-export function parseToProductImpression(product: Product) {
-  if (!product) return null
+export function parseToProductImpression(product: Product): Product {
   const parsedProduct = { ...product }
   const items = parsedProduct.items || []
   const sku = items.find(findAvailableProduct) || head(items)

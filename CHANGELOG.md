@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - `useProductImpression` hook.
 
 ### Changed
--  the context's state props' names and dispatch actions.
+-  The context's state props' names and dispatch actions.
 
 ## [0.1.1] - 2020-01-03
 ### Changed
