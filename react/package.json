@@ -5,13 +5,17 @@
   },
   "dependencies": {
     "apollo-client": "^2.6.3",
+    "debounce": "^1.2.0",
+    "ramda": "^0.26.1",
     "react": "^16.8.6",
     "react-apollo": "^2.5.8",
     "react-dom": "^16.8.6",
     "react-intl": "^2.9.0"
   },
   "devDependencies": {
+    "@types/debounce": "^1.2.0",
     "@types/graphql": "^14.2.2",
+    "@types/ramda": "^0.26.39",
     "@types/react": "^16.8.22",
     "@types/react-intl": "^2.3.18",
     "@vtex/tsconfig": "^0.2.0",
@@ -20,7 +24,8 @@
     "prettier": "^1.18.2",
     "prop-types": "^15.7.2",
     "typescript": "3.7.3",
-    "vtex.render-runtime": "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.render-runtime@8.85.0/public/@types/vtex.render-runtime"
+    "vtex.pixel-manager": "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.pixel-manager@1.1.4/public/@types/vtex.pixel-manager",
+    "vtex.render-runtime": "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.render-runtime@8.88.0/public/@types/vtex.render-runtime"
   },
   "version": "0.1.1"
 }

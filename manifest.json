@@ -8,7 +8,9 @@
     "react": "3.x",
     "docs": "0.x"
   },
-  "dependencies": {},
+  "dependencies": {
+    "vtex.pixel-manager": "1.x"
+  },
   "registries": [
     "smartcheckout"
   ],
