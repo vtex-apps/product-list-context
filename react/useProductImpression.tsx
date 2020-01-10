@@ -34,13 +34,7 @@ const useProductImpression = () => {
   const dispatch = useProductListDispatch()
 
   const debouncedSendImpressionEvents = useCallback(
-    debounce(
-      (nextImpressions: Product[], push: any, dispatch: Dispatch) => {
-        sendImpressionEvents(nextImpressions, push, dispatch)
-      },
-      1000,
-      false
-    ),
+    debounce(sendImpressionEvents, 1000, false),
     []
   )
 
