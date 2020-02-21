@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useReducer, FC } from 'react'
+import React, {
+  FC,
+  useReducer,
+  useContext,
+  createContext,
+  useEffect,
+} from 'react'
 
 export interface Product {
   productId: string
@@ -7,11 +13,27 @@ export interface Product {
 export interface State {
   nextImpressions: Product[]
   sentIds: Set<string>
+  listName?: string
+}
+
+interface SendImpressionAction {
+  type: 'SEND_IMPRESSION'
+  args: { product: Product }
+}
+
+interface ResetNextImpressionsAction {
+  type: 'RESET_NEXT_IMPRESSIONS'
+}
+
+interface SetListNameAction {
+  type: 'SET_LIST_NAME'
+  args: { listName: string }
 }
 
 type ReducerActions =
-  | { type: 'SEND_IMPRESSION'; args: { product: Product } }
-  | { type: 'RESET_NEXT_IMPRESSIONS' }
+  | SendImpressionAction
+  | ResetNextImpressionsAction
+  | SetListNameAction
 
 export type Dispatch = (action: ReducerActions) => void
 
@@ -42,6 +64,12 @@ function productListReducer(state: State, action: ReducerActions): State {
     case 'RESET_NEXT_IMPRESSIONS': {
       return { ...state, nextImpressions: [] }
     }
+
+    case 'SET_LIST_NAME':
+      return {
+        ...state,
+        listName: action.args.listName,
+      }
     default: {
       throw new Error(`Unhandled action type on product-list-context`)
     }
@@ -53,8 +81,17 @@ const initialState: State = {
   sentIds: new Set(),
 }
 
-const ProductListProvider: FC = ({ children }) => {
+interface ProviderProps {
+  listName: string
+}
+
+const ProductListProvider: FC<ProviderProps> = ({ children, listName }) => {
   const [state, dispatch] = useReducer(productListReducer, initialState)
+
+  useEffect(() => {
+    dispatch({ type: 'SET_LIST_NAME', args: { listName } })
+  }, [listName])
+
   return (
     <ProductListStateContext.Provider value={state}>
       <ProductListDispatchContext.Provider value={dispatch}>
