@@ -16,12 +16,17 @@ Add the `product-list-context` app to the app's dependencies list (in the `manif
 }
 ```
 
+| Prop name | Type | Description | Default Value |
+| --- | --- | --- | --- |
+| `listName` | `string` | The list that you are providing the products (e.g. `Home Shelf` or `Search Result`) | `'List of products'` |
+
+
 In the app's files, use the `ProductListProvider` to initialise the context. You'll need to wrap the file's rendered component with the provider in order for its children to have access to the context's data. For example:
 
 ```tsx
 return (
   <div ref={ref} className={`${handles.container} pv4 pb9`}>
-    <ProductListProvider>
+    <ProductListProvider listName="Shelf">
       <ProductList {...productListProps} />
     </ProductListProvider>
   </div>

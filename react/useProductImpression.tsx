@@ -7,11 +7,16 @@ import { parseToProductImpression } from './utils/parser'
 
 const { useProductListDispatch, useProductListState } = productImpressionHooks
 
-const sendImpressionEvents = (
-  products: Product[],
-  push: any,
+interface ImpressionParams {
+  products: Product[]
+  push: any
   dispatch: Dispatch
-) => {
+  listName?: string
+}
+
+const sendImpressionEvents = (params: ImpressionParams) => {
+  const { push, products, dispatch, listName } = params
+
   if (!products || products.length <= 0) {
     return
   }
@@ -22,25 +27,30 @@ const sendImpressionEvents = (
   }))
   push({
     event: 'productImpression',
-    list: 'Shelf',
+    list: listName || 'List of products',
     impressions,
   })
+
   dispatch({ type: 'RESET_NEXT_IMPRESSIONS' })
 }
 
 const useProductImpression = () => {
-  const { nextImpressions } = useProductListState()
+  const { nextImpressions, listName } = useProductListState()
   const { push } = PixelContext.usePixel()
   const dispatch = useProductListDispatch()
-
   const debouncedSendImpressionEvents = useCallback(
     debounce(sendImpressionEvents, 1000, false),
     []
   )
 
   useEffect(() => {
-    debouncedSendImpressionEvents(nextImpressions, push, dispatch)
-  }, [nextImpressions, debouncedSendImpressionEvents, dispatch, push])
+    debouncedSendImpressionEvents({
+      push,
+      dispatch,
+      listName,
+      products: nextImpressions,
+    })
+  }, [nextImpressions, debouncedSendImpressionEvents, dispatch, push, listName])
 }
 
 export default useProductImpression
