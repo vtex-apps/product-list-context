@@ -82,6 +82,8 @@ const initialState: State = {
 }
 
 interface ProviderProps {
+  // Because of this prop you can't use the same context
+  // to two different lists (if you want to differentiate both)
   listName: string
 }
 
