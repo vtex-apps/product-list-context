@@ -27,8 +27,11 @@ export function toHttps(url: any) {
 export function cleanImageUrl(imageUrl: any) {
   const result = baseUrlRegex.exec(imageUrl)
 
-  if (!result) return
-  if (result.length > 0) return result[0]
+  if (result && result.length > 0) {
+    return result[0]
+  }
+
+  return undefined
 }
 
 function replaceLegacyFileManagerUrl(imageUrl: any, width: any, height: any) {
