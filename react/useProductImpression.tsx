@@ -39,7 +39,7 @@ const sendImpressionEvents = (params: ImpressionParams) => {
 }
 
 const useProductImpression = (): void => {
-  const { nextImpressions, listName, sentIds } = useProductListState()
+  const { nextImpressions, listName } = useProductListState()
   const { push } = PixelContext.usePixel()
   const dispatch = useProductListDispatch()
 
@@ -57,14 +57,7 @@ const useProductImpression = (): void => {
       listName,
       nextImpressions,
     })
-  }, [
-    nextImpressions,
-    debouncedSendImpressionEvents,
-    dispatch,
-    push,
-    listName,
-    sentIds,
-  ])
+  }, [nextImpressions, debouncedSendImpressionEvents, dispatch, push, listName])
 }
 
 export default useProductImpression
