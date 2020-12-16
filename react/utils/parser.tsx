@@ -1,4 +1,4 @@
-import { Product } from '../ProductListContext'
+import type { Product } from '../ProductListContext'
 import { changeImageUrlSize, toHttps } from './urlHelpers'
 
 const defaultImage = { imageUrl: '', imageLabel: '' }

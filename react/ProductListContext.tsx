@@ -1,10 +1,5 @@
-import React, {
-  FC,
-  useReducer,
-  useContext,
-  createContext,
-  useEffect,
-} from 'react'
+import type { FC } from 'react'
+import React, { useReducer, useContext, createContext, useEffect } from 'react'
 
 export interface Product {
   productId: string
@@ -43,7 +38,7 @@ const DEFAULT_STATE: State = {
 }
 
 const ProductListStateContext = createContext<State>(DEFAULT_STATE)
-const ProductListDispatchContext = createContext<Dispatch>(action => {
+const ProductListDispatchContext = createContext<Dispatch>((action) => {
   console.error('error in dispatch ', action)
 })
 

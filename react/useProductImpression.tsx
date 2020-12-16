@@ -2,7 +2,8 @@ import { useEffect, useCallback } from 'react'
 import debounce from 'debounce'
 import { PixelContext } from 'vtex.pixel-manager'
 
-import productImpressionHooks, { Product, Dispatch } from './ProductListContext'
+import type { Product, Dispatch } from './ProductListContext'
+import productImpressionHooks from './ProductListContext'
 import { parseToProductImpression } from './utils/parser'
 
 const { useProductListDispatch, useProductListState } = productImpressionHooks
@@ -41,6 +42,9 @@ const useProductImpression = (): void => {
   const { nextImpressions, listName, sentIds } = useProductListState()
   const { push } = PixelContext.usePixel()
   const dispatch = useProductListDispatch()
+
+  // we know what we're doing.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSendImpressionEvents = useCallback(
     debounce(sendImpressionEvents, 1000, false),
     []

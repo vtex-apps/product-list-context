@@ -26,14 +26,16 @@ export function toHttps(url: any) {
 
 export function cleanImageUrl(imageUrl: any) {
   const result = baseUrlRegex.exec(imageUrl)
+
   if (!result) return
   if (result.length > 0) return result[0]
-  return
 }
 
 function replaceLegacyFileManagerUrl(imageUrl: any, width: any, height: any) {
   const isLegacyUrl = imageUrl.includes(legacyUrlPattern)
+
   if (!isLegacyUrl) return imageUrl
+
   return `${cleanImageUrl(imageUrl)}-${width}-${height}`
 }
 
@@ -51,6 +53,7 @@ export function changeImageUrlSize(
     width,
     height
   )
+
   const queryStringSeparator = normalizedImageUrl.includes('?') ? '&' : '?'
 
   return `${normalizedImageUrl}${queryStringSeparator}width=${width}&height=${height}&aspect=true`
