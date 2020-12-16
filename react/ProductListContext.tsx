@@ -11,8 +11,8 @@ export interface Product {
   [key: string]: any
 }
 export interface State {
-  nextImpressions: Product[]
-  sentIds: Set<string>
+  nextImpressions: Array<{ product: Product; impressionIndex: number }>
+  sentIds: Map<string, { position: number }>
   listName?: string
 }
 
@@ -39,7 +39,7 @@ export type Dispatch = (action: ReducerActions) => void
 
 const DEFAULT_STATE: State = {
   nextImpressions: [],
-  sentIds: new Set<string>(),
+  sentIds: new Map<string, { position: number }>(),
 }
 
 const ProductListStateContext = createContext<State>(DEFAULT_STATE)
@@ -51,25 +51,42 @@ function productListReducer(state: State, action: ReducerActions): State {
   switch (action.type) {
     case 'SEND_IMPRESSION': {
       const { product } = action.args
-      let nextImpressions = state.nextImpressions
-      if (!state.sentIds.has(product.productId)) {
-        state.sentIds.add(product.productId)
-        nextImpressions = state.nextImpressions.concat(product)
+      let { nextImpressions } = state
+
+      // ignore already sent impressions
+      if (state.sentIds.has(product.productId)) {
+        return state
       }
+
+      const position = state.sentIds.size + 1
+
+      state.sentIds.set(product.productId, { position })
+
+      nextImpressions = state.nextImpressions.concat({
+        product,
+        impressionIndex: position,
+      })
+
       return {
         ...state,
         nextImpressions,
       }
     }
+
     case 'RESET_NEXT_IMPRESSIONS': {
-      return { ...state, nextImpressions: [] }
+      return {
+        ...state,
+        nextImpressions: [],
+      }
     }
 
-    case 'SET_LIST_NAME':
+    case 'SET_LIST_NAME': {
       return {
         ...state,
         listName: action.args.listName,
       }
+    }
+
     default: {
       throw new Error(`Unhandled action type on product-list-context`)
     }
@@ -78,7 +95,7 @@ function productListReducer(state: State, action: ReducerActions): State {
 
 const initialState: State = {
   nextImpressions: [],
-  sentIds: new Set(),
+  sentIds: new Map(),
 }
 
 interface ProviderProps {

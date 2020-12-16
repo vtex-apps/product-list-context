@@ -8,23 +8,26 @@ import { parseToProductImpression } from './utils/parser'
 const { useProductListDispatch, useProductListState } = productImpressionHooks
 
 interface ImpressionParams {
-  products: Product[]
+  nextImpressions: Array<{ product: Product; impressionIndex: number }>
   push: any
   dispatch: Dispatch
   listName?: string
 }
 
 const sendImpressionEvents = (params: ImpressionParams) => {
-  const { push, products, dispatch, listName } = params
+  const { push, nextImpressions, dispatch, listName } = params
 
-  if (!products || products.length <= 0) {
+  if (!nextImpressions || nextImpressions.length <= 0) {
     return
   }
-  const parsedProducts = products.filter(Boolean).map(parseToProductImpression)
-  const impressions = parsedProducts.map((product: Product, index: number) => ({
-    product,
-    position: index + 1,
-  }))
+
+  const impressions = nextImpressions
+    .filter(Boolean)
+    .map(({ product, impressionIndex }, index) => ({
+      product: parseToProductImpression(product),
+      position: impressionIndex ?? index,
+    }))
+
   push({
     event: 'productImpression',
     list: listName || 'List of products',
@@ -34,8 +37,8 @@ const sendImpressionEvents = (params: ImpressionParams) => {
   dispatch({ type: 'RESET_NEXT_IMPRESSIONS' })
 }
 
-const useProductImpression = () => {
-  const { nextImpressions, listName } = useProductListState()
+const useProductImpression = (): void => {
+  const { nextImpressions, listName, sentIds } = useProductListState()
   const { push } = PixelContext.usePixel()
   const dispatch = useProductListDispatch()
   const debouncedSendImpressionEvents = useCallback(
@@ -48,9 +51,16 @@ const useProductImpression = () => {
       push,
       dispatch,
       listName,
-      products: nextImpressions,
+      nextImpressions,
     })
-  }, [nextImpressions, debouncedSendImpressionEvents, dispatch, push, listName])
+  }, [
+    nextImpressions,
+    debouncedSendImpressionEvents,
+    dispatch,
+    push,
+    listName,
+    sentIds,
+  ])
 }
 
 export default useProductImpression

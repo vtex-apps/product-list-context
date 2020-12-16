@@ -1,7 +1,4 @@
-import { pathOr, head } from 'ramda'
-
 import { Product } from '../ProductListContext'
-
 import { changeImageUrlSize, toHttps } from './urlHelpers'
 
 const defaultImage = { imageUrl: '', imageLabel: '' }
@@ -18,14 +15,16 @@ function findAvailableProduct(item: any) {
 export function parseToProductImpression(product: Product): Product {
   const parsedProduct = { ...product }
   const items = parsedProduct.items || []
-  const sku = items.find(findAvailableProduct) || head(items)
+  const sku = items.find(findAvailableProduct) || items[0]
+
   if (sku) {
-    const [seller = defaultSeller] = pathOr([], ['sellers'], sku)
-    const [referenceId = defaultReference] = pathOr([], ['referenceId'], sku)
-    const [image = defaultImage] = pathOr([], ['images'], sku)
+    const [seller = defaultSeller] = sku?.sellers ?? []
+    const [referenceId = defaultReference] = sku.referenceId ?? []
+    const [image = defaultImage] = sku.images ?? []
 
     const resizedImage = changeImageUrlSize(toHttps(image.imageUrl), 500)
     const parsedImage = { ...image, imageUrl: resizedImage }
+
     parsedProduct.sku = {
       ...sku,
       seller,
@@ -33,5 +32,6 @@ export function parseToProductImpression(product: Product): Product {
       image: parsedImage,
     }
   }
+
   return parsedProduct
 }
