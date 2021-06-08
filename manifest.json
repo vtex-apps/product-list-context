@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "product-list-context",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "title": "VTEX Product List Context",
   "description": "",
   "builders": {
