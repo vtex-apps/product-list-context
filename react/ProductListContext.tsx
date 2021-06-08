@@ -6,14 +6,18 @@ export interface Product {
   [key: string]: any
 }
 export interface State {
-  nextImpressions: Array<{ product: Product; impressionIndex: number }>
+  nextImpressions: Array<{
+    product: Product
+    impressionIndex: number
+    originalIndex: number
+  }>
   sentIds: Map<string, { position: number }>
   listName?: string
 }
 
 interface SendImpressionAction {
   type: 'SEND_IMPRESSION'
-  args: { product: Product }
+  args: { product: Product; position?: number }
 }
 
 interface ResetNextImpressionsAction {
@@ -45,7 +49,7 @@ const ProductListDispatchContext = createContext<Dispatch>((action) => {
 function productListReducer(state: State, action: ReducerActions): State {
   switch (action.type) {
     case 'SEND_IMPRESSION': {
-      const { product } = action.args
+      const { product, position: originalIndex = 0 } = action.args
       let { nextImpressions } = state
 
       // ignore already sent impressions
@@ -57,10 +61,25 @@ function productListReducer(state: State, action: ReducerActions): State {
 
       state.sentIds.set(product.productId, { position })
 
-      nextImpressions = state.nextImpressions.concat({
-        product,
-        impressionIndex: position,
-      })
+      const nextImpressionsFirstPosition =
+        state.nextImpressions[0]?.impressionIndex ?? position
+
+      nextImpressions = state.nextImpressions
+        .concat({
+          product,
+          impressionIndex: position,
+          originalIndex,
+        })
+        .sort(
+          (
+            { originalIndex: originalIndexA },
+            { originalIndex: originalIndexB }
+          ) => originalIndexA - originalIndexB
+        )
+        .map((impression, index) => ({
+          ...impression,
+          impressionIndex: nextImpressionsFirstPosition + index,
+        }))
 
       return {
         ...state,
