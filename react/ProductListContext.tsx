@@ -95,10 +95,17 @@ function productListReducer(state: State, action: ReducerActions): State {
     }
 
     case 'SET_LIST_NAME': {
-      return {
-        ...state,
-        listName: action.args.listName,
+      // When setting a new list name, we should also reset `sentIds`, since
+      // this indicates we're dealing with a brand new list.
+      if (action.args.listName !== state.listName) {
+        return {
+          ...state,
+          listName: action.args.listName,
+          sentIds: new Map(),
+        }
       }
+
+      return state
     }
 
     default: {
