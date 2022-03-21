@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.4.1] - 2022-03-21
 ### Fixed
 - When the same product appeared on two different product lists, only the impression event related to the first product list would get sent, as that product would be added to the `sentIds` map as soon as the first event was triggered.
 
